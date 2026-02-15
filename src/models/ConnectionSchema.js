@@ -11,6 +11,7 @@ const ConnectionSchema = new Schema({
         type:mongoose.Schema.Types.ObjectId,
         required:true,
         index:true,
+        ref:"User"
     },
     status:{
         type:String,
