@@ -3,8 +3,9 @@ const express = require("express");
 const usersRoute = express.Router();
 const { verifyUser } = require('../controllers/jwtVerifyController');
 const { connect } = require('mongoose');
+const userModel = require('../models/user');
 
-const SAFE_DATA=["firstname","last","about","skills"]
+const SAFE_DATA = ["firstname", "last", "about", "skills"]
 
 // Get All the recived requests
 usersRoute.get('/user/recived_requests', verifyUser, async (req, res) => {
@@ -31,18 +32,59 @@ usersRoute.get('/user/accepted', verifyUser, async (req, res) => {
                 { ReciverId: loggedUser, status: "accepted" },
                 { SenderId: loggedUser, status: "accepted" }
             ]
-        }).populate("SenderId",SAFE_DATA).populate("ReciverId",SAFE_DATA);
-        // I am not able to get who is sender or reciver
-        getAcceptedUsers.map(connection=>{
-            if(connection.SenderId._id.toString()===loggedUser.toString()){
+        }).populate("SenderId", SAFE_DATA).populate("ReciverId", SAFE_DATA);
+        // I am not able to get who is accepted sender or reciver
+        getAcceptedUsers.map(connection => {
+            if (connection.SenderId._id.toString() === loggedUser.toString()) {
                 return console.log(connection.ReciverId);
-            }else{
+            } else {
                 return console.log(connection.SenderId);
             }
         })
-        res.status(200).json({message:"Accepted Requests"} + getAcceptedUsers);
+        res.status(200).json({ message: "Accepted Requests" } + getAcceptedUsers);
     } catch (error) {
-        res.json({message:error.message})
+        res.json({ message: error.message })
+    }
+})
+
+// Feed API (MAIN PAGE API TO DISPLAY ALL DATA);
+// getlogged User
+// not display own profile
+// not display req accepted profile
+// no rejected and ignore
+usersRoute.get('/user/core', verifyUser, async (req, res) => {
+    try {
+        const limit=parseInt(req.query.limit)||4;
+        const page=parseInt(req.query.page)||1;
+        const skip=(page-1)*limit;
+        const loggedUser = req.user._id;
+        const Connections = await ConnectModel.find(
+            {
+                $or: [
+                    { SenderId: loggedUser },
+                    { ReciverId: loggedUser }
+                ]
+            }
+        ).select(["SenderId", "ReciverId"]);
+
+        const hideActionId=new Set();
+
+        Connections.forEach(element => {
+            hideActionId.add(element.SenderId._id.toString()),
+            hideActionId.add(element.ReciverId._id.toString())
+        });
+
+        hideActionId.add(loggedUser.toString());
+        // console.log(hideActionId);
+
+        const DataExpHideAction=await userModel.find({_id:{$nin:[...hideActionId]}}).select(SAFE_DATA).skip(skip).limit(limit);
+
+        res.status(200).json({
+            message: "Users",
+            data: DataExpHideAction
+        });
+    } catch (error) {
+        res.status(400).json({ message: "Something Went Wrong" ,error: error.message});
     }
 })
 
