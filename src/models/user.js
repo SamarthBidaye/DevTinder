@@ -32,7 +32,7 @@ const userSchema=new Schema(
             unique:true,
             trim:true,
             validate:(value)=>{
-                return validator.isEmail(value)
+                return validator.isEmail(value) //Need to install that lib from npm (Validator)
             }
         },
         password:{
@@ -57,6 +57,10 @@ const userSchema=new Schema(
                 validator:v=>v.length<=5,
             }
         },
+        image:{
+            type:String,
+            default:"https://t3.ftcdn.net/jpg/04/85/67/08/360_F_485670810_kCPqkWudAgcVpt8vIRiH95tBrxT33RwN.jpg"
+        }
     },{timestamps:true}
 )
 

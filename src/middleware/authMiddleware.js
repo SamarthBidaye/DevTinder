@@ -43,7 +43,7 @@ const loginValidate = async (req, res, next) => {
 const UserUpdateFeildsOnly = async (req, res, next) => {
     try {
         const updateValues = Object.keys(req.body);
-        const allowedFields = ["firstname", "last", "contact", "age", "about"];
+        const allowedFields = ["firstname", "last", "contact", "age", "about","image"];
         const isValid=updateValues.every(k=>allowedFields.includes(k));
         if(!isValid){
             return res.status(400).send("You have entered the feilds which are not required")

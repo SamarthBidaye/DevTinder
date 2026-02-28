@@ -75,7 +75,7 @@ request.get("/checkloggedUser", verifyUser, async (req, res) => {
     try {
         const findLoggedUser = await userModel.findById(req.user._id)
         console.log(findLoggedUser)
-        res.send("Logged User is : " + findLoggedUser.firstname)
+        res.status(200).json({ message: "Logged User details", data: findLoggedUser })
     } catch (error) {
         res.send("Unable to Fetch the Logged User", error.message)
     }
@@ -102,9 +102,17 @@ request.post('/recive/:status/:connectionId', verifyUser, async (req, res) => {
         }
         findUser.status = status;
         await findUser.save();
-        res.json({ message: "Accepted Complete" })
+        if (status === "accepted") {
+            return res.json({ message: "Accepted Complete" })
+        } else if (status === "rejected") {
+            return res.json({ message: "User Rejected" })
+        }
+
     } catch (error) {
-        res.status(400).json({ message: "Something went wrong" }, { error: error.message })
+        res.status(500).json({
+            message: "Something went wrong",
+            error: error.message
+        });
     }
 
 })
