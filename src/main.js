@@ -16,10 +16,10 @@ const {profileRouter}=require('./routes/profile');
 const {usersRoute}=require('./routes/users');
 const request=require('./routes/request');
 
-app.use('/api/auth',authRouter);
-app.use('/api/user',profileRouter);
-app.use('/api/request',request);
-app.use('/api/get',usersRoute);
+app.use('/auth',authRouter);
+app.use('/user',profileRouter);
+app.use('/request',request);
+app.use('/get',usersRoute);
 
 connectDB().then(() => {
     console.log("Connected to Database Successfully");
