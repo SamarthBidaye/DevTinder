@@ -121,7 +121,7 @@ request.post('/api/recive/:status/:connectionId', verifyUser, async (req, res) =
 
 // find the logged in user as he/she will be accepting the requets
 // for recivedId check status if status is accepted then get the documentId of that user
-request.get('/api/allAcceptedUser', verifyUser, async (req, res) => {
+request.get('/allAcceptedUser', verifyUser, async (req, res) => {
     try {
         const loggedUserId = req.user._id;
         if (!loggedUserId) {
