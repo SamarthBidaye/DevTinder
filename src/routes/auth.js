@@ -9,7 +9,7 @@ const {UserUpdateFeildsOnly}=require('../middleware/authMiddleware')
 
 
 // Sign in api
-authRouter.post("/signin", SignInvalidate, async (req, res) => {
+authRouter.post("/api/signin", SignInvalidate, async (req, res) => {
     try {
         const { firstname, last, contact, age, email, password, about, skills, image } = req.body;
         const userEmail = await userModel.findOne({ email });
@@ -41,7 +41,7 @@ authRouter.post("/signin", SignInvalidate, async (req, res) => {
 
 
 // Login api
-authRouter.post("/login", loginValidate, (req, res) => {
+authRouter.post("/api/login", loginValidate, (req, res) => {
     try {
         const RecivedLoginObject = req.user;
         const token = jwt.sign({ _id: RecivedLoginObject._id }, "SKEY", { expiresIn: "1d" });
@@ -54,7 +54,7 @@ authRouter.post("/login", loginValidate, (req, res) => {
 
 
 // Logout api
-authRouter.post("/logout", (req, res) => {
+authRouter.post("/api/logout", (req, res) => {
     res.clearCookie("LoginToken",{
         httpOnly:true,
     });
@@ -63,7 +63,7 @@ authRouter.post("/logout", (req, res) => {
 
 
 // Update the profile
-authRouter.patch("/update", verifyUser, UserUpdateFeildsOnly, async (req, res) => {
+authRouter.patch("/api/update", verifyUser, UserUpdateFeildsOnly, async (req, res) => {
     try {
         const userId = req.user._id;
 

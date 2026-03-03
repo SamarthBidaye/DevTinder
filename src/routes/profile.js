@@ -5,7 +5,7 @@ const jwt=require('jsonwebtoken');
 
 // Get Data
 
-profileRouter.get("/home", async (req, res) => {
+profileRouter.get("/api/home", async (req, res) => {
     try {
         const token = req.cookies.LoginToken;
         if(!token){

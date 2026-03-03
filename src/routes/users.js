@@ -8,7 +8,7 @@ const userModel = require('../models/user');
 const SAFE_DATA = ["firstname", "last", "about", "skills","image"]
 
 // Get All the recived requests
-usersRoute.get('/user/recived_requests', verifyUser, async (req, res) => {
+usersRoute.get('/api/user/recived_requests', verifyUser, async (req, res) => {
     try {
         const loggedUser = req.user._id;
 
@@ -32,7 +32,7 @@ usersRoute.get('/user/recived_requests', verifyUser, async (req, res) => {
 
 
 // Get all my connections (accepted connections);
-usersRoute.get('/user/accepted', verifyUser, async (req, res) => {
+usersRoute.get('/api/user/accepted', verifyUser, async (req, res) => {
     try {
         const loggedUser = req.user._id;
         const getAcceptedUsers = await ConnectModel.find({
@@ -60,7 +60,7 @@ usersRoute.get('/user/accepted', verifyUser, async (req, res) => {
 // not display own profile
 // not display req accepted profile
 // no rejected and ignore
-usersRoute.get('/user/core', verifyUser, async (req, res) => {
+usersRoute.get('/api/user/core', verifyUser, async (req, res) => {
     try {
         const limit=parseInt(req.query.limit)||4;
         const page=parseInt(req.query.page)||1;
@@ -99,7 +99,7 @@ usersRoute.get('/user/core', verifyUser, async (req, res) => {
 
 
 // Get All Send Users
-usersRoute.get('/user/sentreq',verifyUser,async(req,res)=>{
+usersRoute.get('/api/user/sentreq',verifyUser,async(req,res)=>{
     try {
         const loggedUser=req.user._id
         const findSenderRequests=await ConnectModel.find({SenderId:loggedUser,status:"intrested"}).populate("ReciverId",["firstname","last","email","image"])
