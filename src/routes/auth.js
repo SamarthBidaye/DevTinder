@@ -5,7 +5,7 @@ const { SignInvalidate, loginValidate } = require('../middleware/authMiddleware'
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const { verifyUser } = require('../controllers/jwtVerifyController');
-const {UserUpdateFeildsOnly}=require('../middleware/authMiddleware')
+const {UserUpdateFeildsOnly}=require('../middleware/authMiddleware');
 
 
 // Sign in api

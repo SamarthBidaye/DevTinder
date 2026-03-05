@@ -6,7 +6,7 @@ const { verifyUser } = require('../controllers/jwtVerifyController');
 
 
 // Send Connection Request
-request.post("/api/send/:status/:toUserId", verifyUser, async (req, res) => {
+request.post("/send/:status/:toUserId", verifyUser, async (req, res) => {
     try {
         const FromUser = req.user._id;
         const ToUserData = req.params.toUserId;
@@ -48,7 +48,7 @@ request.post("/api/send/:status/:toUserId", verifyUser, async (req, res) => {
 
 
 // Want to see requests sent by users
-request.get("/api/recivedRequests", verifyUser, async (req, res) => {
+request.get("/recivedRequests", verifyUser, async (req, res) => {
     try {
         const SeeAllReq = await ConnectModel.find({ ReciverId: req.user._id });
         res.send("Your Requests " + SeeAllReq);
@@ -59,7 +59,7 @@ request.get("/api/recivedRequests", verifyUser, async (req, res) => {
 
 // See All the request sent by an user
 
-request.get("/api/allReqSentByUser", verifyUser, async (req, res) => {
+request.get("/allReqSentByUser", verifyUser, async (req, res) => {
     try {
         const findAllRequests = await ConnectModel.find({ SenderId: req.user._id });
         console.log(findAllRequests);
@@ -71,7 +71,7 @@ request.get("/api/allReqSentByUser", verifyUser, async (req, res) => {
 
 
 // Check which user is logged in
-request.get("/api/checkloggedUser", verifyUser, async (req, res) => {
+request.get("/checkloggedUser", verifyUser, async (req, res) => {
     try {
         const findLoggedUser = await userModel.findById(req.user._id)
         console.log(findLoggedUser)
@@ -82,7 +82,7 @@ request.get("/api/checkloggedUser", verifyUser, async (req, res) => {
 })
 
 // Approve/reject the request sent by the user
-request.post('/api/recive/:status/:connectionId', verifyUser, async (req, res) => {
+request.post('/recive/:status/:connectionId', verifyUser, async (req, res) => {
     try {
         const loggedUser = req.user._id
         // console.log(loggedUser)

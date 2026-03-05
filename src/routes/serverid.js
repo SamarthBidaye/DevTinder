@@ -1,1 +1,1 @@
-export const sereverapi='http://16.171.200.44/'
+export const serverapi = "http://16.171.200.44";
